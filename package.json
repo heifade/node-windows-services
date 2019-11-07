@@ -1,6 +1,6 @@
 {
   "name": "node-windows-services",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "",
   "main": "index.js",
   "bin": {
@@ -14,7 +14,7 @@
   "scripts": {},
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "node-windows": "^0.1.14"
   }
