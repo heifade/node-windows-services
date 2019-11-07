@@ -16,7 +16,7 @@ node-windows-services
 {
   "name": "server name",
   "description": "description",
-  "script": ""
+  "script": "./index.js"
 }
 ```
 
