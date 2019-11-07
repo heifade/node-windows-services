@@ -1,19 +1,41 @@
 const { Service } = require("node-windows");
 const { resolve } = require("path");
 const { readFileSync, existsSync } = require("fs");
+const { getConfig } = require("./utils");
 
-const configFile = resolve(__dirname, "./config.json");
+const configFile = getConfig(process.argv);
 
 if (!existsSync(configFile)) {
-  console.error(`File ${configFile} not exists!`);
+  console.error(`Config file ${configFile} not exists!`);
   return;
 }
 
-const { name: serviceName, description, script } = readFileSync(configFile);
+let config = {};
+try {
+  config = JSON.parse(readFileSync(configFile));
+} catch {
+  console.error(`Can not read from file ${configFile}!`);
+  return;
+}
+
+const { name: serviceName, description, script } = config;
+
+let scriptFile = "";
+if (script.startsWith("./") || script.startsWith("../")) {
+  scriptFile = resolve(process.cwd(), script);
+} else {
+  scriptFile = script;
+}
+
+if (!existsSync(scriptFile)) {
+  console.error(`Script file ${scriptFile} not exists!`);
+  return;
+}
+
 const svc = new Service({
   name: serviceName,
   description,
-  script: resolve(__dirname, script),
+  script: scriptFile,
   wait: 1, // 程序崩溃后重启时间
   grow: 0.25, // 重启等待时间成长值。
   maxRestarts: 20 // 60秒内最多重启次数
