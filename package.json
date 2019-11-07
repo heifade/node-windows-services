@@ -1,0 +1,23 @@
+{
+  "name": "node-windows-services",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "windows-services-install": "./bin/windows-services-install"
+  },
+  "files": [
+    "bin",
+    "src",
+    "config.json"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "node-windows": "^0.1.14"
+  }
+}
