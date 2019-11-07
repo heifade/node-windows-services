@@ -12,7 +12,7 @@ node-windows-services
 
 ## 配置文件
 ### 默认到工作目录下找 config.json 文件
-```
+```json
 {
   "name": "server name",
   "description": "description",
