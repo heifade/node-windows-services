@@ -1,41 +1,12 @@
 const { Service } = require("node-windows");
-const { resolve } = require("path");
-const { readFileSync, existsSync } = require("fs");
 const { getConfig } = require("./utils");
 
-const configFile = getConfig(process.argv);
-
-if (!existsSync(configFile)) {
-  console.error(`Config file ${configFile} not exists!`);
-  return;
-}
-
-let config = {};
-try {
-  config = JSON.parse(readFileSync(configFile));
-} catch {
-  console.error(`Can not read from file ${configFile}!`);
-  return;
-}
-
-const { name: serviceName, description, script } = config;
-
-let scriptFile = "";
-if (script.startsWith("./") || script.startsWith("../")) {
-  scriptFile = resolve(process.cwd(), script);
-} else {
-  scriptFile = script;
-}
-
-if (!existsSync(scriptFile)) {
-  console.error(`Script file ${scriptFile} not exists!`);
-  return;
-}
+const { name, description, script } = getConfig(process.argv);
 
 const svc = new Service({
-  name: serviceName,
+  name,
   description,
-  script: scriptFile,
+  script,
   wait: 1, // 程序崩溃后重启时间
   grow: 0.25, // 重启等待时间成长值。
   maxRestarts: 20 // 60秒内最多重启次数
@@ -43,20 +14,20 @@ const svc = new Service({
 
 svc.on("install", () => {
   svc.start();
-  console.log(`${serviceName} installed`);
+  console.log(`${name} installed`);
 });
 
 svc.on("uninstall", () => {
-  console.log(`${serviceName} uninstalled`);
+  console.log(`${name} uninstalled`);
 });
 
 svc.on("stop", () => {
-  console.log(`${serviceName} stopped.`);
+  console.log(`${name} stopped.`);
   console.log("Is running: ", svc.exists);
 });
 
 svc.on("start", () => {
-  console.log(`${serviceName} started.`);
+  console.log(`${name} started.`);
   console.log("Is running: ", svc.exists);
 });
 
